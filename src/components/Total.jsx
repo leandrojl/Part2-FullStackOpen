@@ -4,9 +4,9 @@
   
  
   
-  const Total = (props) =>{
+  const Total = ({parts}) =>{
     const initialValue=0;
-    const totalExercises =  props.course.parts.reduce(
+    const totalExercises = parts.reduce(
       (total, part)=>{
   
         return total + part.exercises;
