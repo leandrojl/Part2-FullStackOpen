@@ -6,20 +6,25 @@ import Total from "./Total"
 
 const Course = ({course}) =>{
  
-
   //console.log("course name",course[0].name)
 
     return(
       <div>
-        <Header name={course[0].name}/>
-        
-        <Content parts={course[0].parts}/>
-        <Total parts={course[0].parts}/>
+        {
+          course.map((currentCourse)=>(
+            <div key={currentCourse.id}>
+                <Header name={currentCourse.name}/>
+                <Content parts={currentCourse.parts}/>
+                <Total parts={currentCourse.parts}/>
+            </div>
+          
 
-        <Header name={course[1].name}/>
+       
+
+          ))
+        }
         
-        <Content parts={course[1].parts}/>
-        <Total parts={course[1].parts}/>
+        
       </div>
     )
   
