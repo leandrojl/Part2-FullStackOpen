@@ -5,17 +5,35 @@ const App = () => {
     { name: 'Arto Hellas' },
     { name: 'Arto Hellast' }
   ]) 
-  const [newName, setNewName] = useState('new note')
+  const [newName, setNewName] = useState('new name')
 
   const addPersonToThePhoneBook = (event) => {
     event.preventDefault()
+   
+    
     const personObject = {
       name: newName
     }
-    setNewName("")
+
+    const checkPersonName = persons.some(person => person.name === newName) 
+
+    if(checkPersonName){
+      alert(`${newName} it is already in the list! Please write another one`)
+      console.log("Person not added to the persons array")
+    }else{
+      setNewName("")
     setPersons(persons.concat(personObject))
     console.log("form submitted")
-    console.log("new persons array", persons)
+    
+
+    }
+    
+
+    //receive new name
+    //check if it is in the persons array
+    //add if there is none
+    //if not, ask to write the name again because it is repeated
+    
   }
 
   const handlePersonNameChange = (event) => {
