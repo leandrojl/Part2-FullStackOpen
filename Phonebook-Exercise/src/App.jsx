@@ -12,6 +12,9 @@ const App = () => {
   const [newName, setNewName] = useState('new name')
   const [newNumber, setNewNumber] = useState('new number')
   const [newSearch, setNewSearch] = useState('search here...')
+  const [filteredArray, setFilteredArray] = useState([])
+
+   
 
   const handlePersonNameChange = (event) => {
     setNewName(event.target.value)
@@ -23,6 +26,15 @@ const App = () => {
 
   const handleSerchChange = (event) => {
     setNewSearch(event.target.value)
+    if(event.target.value === ""){
+      setFilteredArray([])
+    }else{
+      const filteredPersonsContacts = persons.filter(person => person.name.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase()))
+      setFilteredArray(filteredPersonsContacts)
+    }
+    
+    console.log("this is the filtered array",filteredArray)
+
   }
 
 
@@ -80,20 +92,15 @@ const App = () => {
       <div>debug newNumber: {newNumber}</div>
       <h2>Filtered contacts</h2>
       <ul>
-        {
-          persons.map(
-            person =>
-            <li key={person.name}>
-              <p>Name: {person.name}</p>
-              <p>Number: {person.number}</p>
-              
-              
-            </li>
-            
-            
-          )
-        }
-      </ul>
+          {filteredArray.map(
+            person => (
+              <li key={person.name}>
+                <p>Name: {person.name}</p>
+                <p>Number: {person.number}</p>
+              </li>
+            )
+          )}
+        </ul>
       <h2>Added to Phonebook:</h2>
       <ul>
         {
