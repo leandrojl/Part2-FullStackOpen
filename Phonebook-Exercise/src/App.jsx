@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import SearchFilter from "./components/SearchFilter"
+import PersonForm from "./components/PersonForm"
+import FilteredContacts from "./components/FilteredContacts"
+import Header from "./components/Header"
 
 const App = () => {
   const [persons, setPersons] = useState(
@@ -24,7 +28,7 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const handleSerchChange = (event) => {
+  const handleSearchChange = (event) => {
     setNewSearch(event.target.value)
     if(event.target.value === ""){
       setFilteredArray([])
@@ -33,15 +37,13 @@ const App = () => {
       setFilteredArray(filteredPersonsContacts)
     }
     
-    console.log("this is the filtered array",filteredArray)
+   
 
   }
 
 
   const addPersonToThePhoneBook = (event) => {
     event.preventDefault()
-   console.log(event.target.elements)
-   console.log(event.target.elements[0].value)
     
     const personObject = {
       name: newName,
@@ -73,24 +75,20 @@ const App = () => {
 
   return (
     <div>
-      <h1>Phonebook</h1>
 
-      <p>Search your contact: <input onChange={handleSerchChange} value={newSearch} /> </p>
-      <div>debug newSearch: {newSearch}</div>
+      <Header title={"Phonebook"} headingLevel={"h1"}/>
+      <SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/>
+
+      <Header title={"Submit your contact:"} headingLevel={"h2"}/>
+      <PersonForm addPersonToThePhoneBook={addPersonToThePhoneBook}
+                  handlePersonNameChange={handlePersonNameChange}
+                  handlePersonNumberChange={handlePersonNumberChange}
+                  newName={newName}
+                  newNumber={newNumber}/>
       
-      <h2>Submit your contact:</h2>
-      <form onSubmit={addPersonToThePhoneBook}>
-        <div>Name: <input onChange={handlePersonNameChange} value={newName}/></div>
-        <div>Number: <input onChange={handlePersonNumberChange} value={newNumber} /></div>
-       
-        
-          <button type="submit">Save</button>
-        
-        
-      </form>
-      <div>debug newName: {newName}</div>
-      <div>debug newNumber: {newNumber}</div>
-      <h2>Filtered contacts</h2>
+      
+      <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
+      <FilteredContacts />
       <ul>
           {filteredArray.map(
             person => (
@@ -101,7 +99,7 @@ const App = () => {
             )
           )}
         </ul>
-      <h2>Added to Phonebook:</h2>
+        <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
       <ul>
         {
           persons.map(
