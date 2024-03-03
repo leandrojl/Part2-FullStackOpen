@@ -3,6 +3,7 @@ import SearchFilter from "./components/SearchFilter"
 import PersonForm from "./components/PersonForm"
 import FilteredContacts from "./components/FilteredContacts"
 import Header from "./components/Header"
+import PersonsOnThePhoneBook from "./components/PersonsOnThePhoneBook"
 
 const App = () => {
   const [persons, setPersons] = useState(
@@ -88,18 +89,10 @@ const App = () => {
       
       
       <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
-      <FilteredContacts />
-      <ul>
-          {filteredArray.map(
-            person => (
-              <li key={person.name}>
-                <p>Name: {person.name}</p>
-                <p>Number: {person.number}</p>
-              </li>
-            )
-          )}
-        </ul>
-        <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
+      <FilteredContacts filteredArray={filteredArray}/>
+      
+      <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
+      <PersonsOnThePhoneBook persons={persons}/>
       <ul>
         {
           persons.map(
