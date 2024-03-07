@@ -76,40 +76,18 @@ const App = () => {
 
   return (
     <div>
-
       <Header title={"Phonebook"} headingLevel={"h1"}/>
       <SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/>
-
       <Header title={"Submit your contact:"} headingLevel={"h2"}/>
       <PersonForm addPersonToThePhoneBook={addPersonToThePhoneBook}
                   handlePersonNameChange={handlePersonNameChange}
                   handlePersonNumberChange={handlePersonNumberChange}
                   newName={newName}
                   newNumber={newNumber}/>
-      
-      
       <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
       <FilteredContacts filteredArray={filteredArray}/>
-      
       <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
       <PersonsOnThePhoneBook persons={persons}/>
-      <ul>
-        {
-          persons.map(
-            person =>
-            <li key={person.name}>
-              <p>Name: {person.name}</p>
-              <p>Number: {person.number}</p>
-              
-              
-            </li>
-            
-            
-          )
-        }
-      </ul>
-     
-      
     </div>
   )
 }
