@@ -5,7 +5,7 @@ import Form from "./components/Form"
 import axios from 'axios'
 
 
-const App = (props) => {
+const App = () => {
 
   const [notes, setNotes] = useState([])
   const [showAll, setShowAll] = useState(true)
