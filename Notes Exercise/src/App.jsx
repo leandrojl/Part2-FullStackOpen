@@ -12,15 +12,20 @@ const App = () => {
   const [newNote, setNewNote] = useState(
     'Type a new note'
   )
-
+  
+  let counter = 0;
   const hook = () => {
+    
+    console.log("counter pre effect",counter)
     console.log('effect')
+    counter++
     axios
       .get('http://localhost:3001/notes')
       .then(response => {
         console.log('promise fulfilled')
         setNotes(response.data)
       })
+      console.log("counter post effect",counter)
   }
   
   useEffect(hook, [])
@@ -32,14 +37,19 @@ const App = () => {
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
-      id: notes.length + 1,
       content: newNote,
       important: Math.random() < 0.5,
       
     }
+
+    axios
+    .post('http://localhost:3001/notes', noteObject)
+    .then(response => {
+      setNotes(notes.concat(noteObject))
+      setNewNote('')
+    })
   
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+    
     
   }
 
