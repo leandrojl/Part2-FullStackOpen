@@ -4,7 +4,7 @@ const FilteredContacts = (props) =>{
       <ul>
           {props.filteredArray.map(
             person => (
-              <li key={person.name}>
+              <li key={person.id}>
                 <p>Name: {person.name}</p>
                 <p>Number: {person.number}</p>
               </li>

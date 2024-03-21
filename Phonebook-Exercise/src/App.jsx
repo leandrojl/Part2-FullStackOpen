@@ -5,6 +5,7 @@ import FilteredContacts from "./components/FilteredContacts"
 import Header from "./components/Header"
 import PersonsOnThePhoneBook from "./components/PersonsOnThePhoneBook"
 import axios from 'axios'
+import personsService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -15,11 +16,11 @@ const App = () => {
 
   const hook = () => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personsService
+    .getAll()
+    .then(initialPersons => {
+        console.log("this is the response", initialPersons)
+        setPersons(initialPersons)
       })
   }
   
@@ -64,7 +65,14 @@ const App = () => {
       console.log("Person not added to the persons array")
     }else{
       setNewName("")
-    setPersons(persons.concat(personObject))
+      personsService
+      .create(personObject)
+      .then(createdPerson => {
+      setPersons(persons.concat(createdPerson))
+      
+      console.log(createdPerson)
+    })
+      
     console.log("form submitted")
     
 
