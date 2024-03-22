@@ -86,6 +86,18 @@ const App = () => {
     
   }
 
+  const handleDeletePerson = (id) =>{
+    //check id from persons[] that previously brings the persons from db.json
+    //delete object from db.json
+    axios.delete(`http://localhost:3001/persons/${id}`)
+  .then(response => {
+    console.log('Resource deleted successfully:', response.data);
+  })
+  .catch(error => {
+    console.error('Error deleting resource:', error);
+  });
+  }
+
   
 
   return (
@@ -101,7 +113,7 @@ const App = () => {
       <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
       <FilteredContacts filteredArray={filteredArray}/>
       <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
-      <PersonsOnThePhoneBook persons={persons}/>
+      <PersonsOnThePhoneBook handleDeletePerson={handleDeletePerson} persons={persons}/>
     </div>
   )
 }
