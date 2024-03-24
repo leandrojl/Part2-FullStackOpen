@@ -22,6 +22,9 @@ const App = () => {
         console.log("this is the response", initialPersons)
         setPersons(initialPersons)
       })
+    .catch(error => {
+        console.error('Error updating the phonebook:', error);
+      });
   }
   
   useEffect(hook, [])
@@ -61,8 +64,29 @@ const App = () => {
     const checkPersonName = persons.some(person => person.name === newName) 
 
     if(checkPersonName){
-      alert(`${newName} it is already in the list! Please write another one`)
-      console.log("Person not added to the persons array")
+      /* alert(`${newName} it is already in the list! Please write another one`)
+      console.log("Person not added to the persons array") */
+      //if a person's name is equal to an existing object with that name, change the phone number of that object with the new number
+      if(window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)){
+        const personDuplicated = persons.find(person => person.name === personObject.name)
+      console.log("Person duplicated:", personDuplicated)
+      const changedPersonNumber = { ...personDuplicated, number: newNumber }
+    
+      personsService
+      .update(personDuplicated.id,changedPersonNumber)
+      .then(returnedPerson => {
+        //setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
+      })
+      .catch(error => {
+        console.log("An error has ocurred!", error)
+      })
+
+      }
+      
+
+
+      
     }else{
       setNewName("")
       personsService
@@ -86,16 +110,34 @@ const App = () => {
     
   }
 
-  const handleDeletePerson = (id) =>{
+  const handleDeletePerson = (personObject) =>{
     //check id from persons[] that previously brings the persons from db.json
+    //ask user if he/she wants to delete the person 
     //delete object from db.json
-    axios.delete(`http://localhost:3001/persons/${id}`)
-  .then(response => {
-    console.log('Resource deleted successfully:', response.data);
-  })
-  .catch(error => {
-    console.error('Error deleting resource:', error);
-  });
+    if(window.confirm(`Wanna proceed deleting ${personObject.name}?`)){
+      personsService
+    .deleteEntry(personObject)
+    .then(deletedEntry => {
+      console.log('Resource deleted successfully:', deletedEntry);
+      setPersons(prevPersons => prevPersons.filter(person => person.id !== personObject.id));
+      /* personsService
+      .getAll()
+      .then(initialPersons => {
+          console.log("this is the response", initialPersons)
+          setPersons(initialPersons)
+        })
+      .catch(error => {
+        console.error('Error updating the phonebook:', error);
+      }); */
+      
+      
+    })
+    .catch(error => {
+      console.error('Error deleting resource:', error);
+    });
+    
+    }
+    
   }
 
   

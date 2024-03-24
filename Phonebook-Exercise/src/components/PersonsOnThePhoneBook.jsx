@@ -10,7 +10,7 @@ const PersonsOnThePhoneBook = (props) =>{
             <li key={person.id}>
               <p>Name: {person.name}</p>
               <p>Number: {person.number}</p>
-              <button onClick={()=> props.handleDeletePerson(person.id)} >Delete</button>
+              <button onClick={()=> props.handleDeletePerson(person)} >Delete</button>
               
             </li>
             
