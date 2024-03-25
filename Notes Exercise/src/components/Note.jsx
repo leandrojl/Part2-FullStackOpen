@@ -1,12 +1,18 @@
+import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup'
+
+
 const Note = ({ note, toggleImportance }) => {
   const label = note.important
     ? 'make not important' : 'make important'
 
   return (
-    <li>
-      {note.content} 
-      <button onClick={toggleImportance}>{label}</button>
-    </li>
+    
+    <ListGroup.Item className="d-flex justify-content-center"> 
+        <span style={{ flexGrow: 1 }}>{note.content}</span> 
+        <Button onClick={toggleImportance} bg="primary" size="sm">{label}</Button>
+    </ListGroup.Item>
+        
   )
 }
   
