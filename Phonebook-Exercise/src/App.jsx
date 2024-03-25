@@ -16,20 +16,16 @@ const App = () => {
 
   const hook = () => {
     console.log('effect')
-    personsService
-    .getAll()
+
+    personsService.getAll()
     .then(initialPersons => {
         console.log("this is the response", initialPersons)
         setPersons(initialPersons)
       })
-    .catch(error => {
-        console.error('Error updating the phonebook:', error);
-      });
+    .catch(error => {console.error('Error updating the phonebook:', error)});
   }
   
   useEffect(hook, [])
-
-   
 
   const handlePersonNameChange = (event) => {
     setNewName(event.target.value)
@@ -43,13 +39,10 @@ const App = () => {
     setNewSearch(event.target.value)
     if(event.target.value === ""){
       setFilteredArray([])
-    }else{
-      const filteredPersonsContacts = persons.filter(person => person.name.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase()))
-      setFilteredArray(filteredPersonsContacts)
+        }else{
+          const filteredPersonsContacts = persons.filter(person => person.name.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase()))
+          setFilteredArray(filteredPersonsContacts)
     }
-    
-   
-
   }
 
 
@@ -64,83 +57,34 @@ const App = () => {
     const checkPersonName = persons.some(person => person.name === newName) 
 
     if(checkPersonName){
-      /* alert(`${newName} it is already in the list! Please write another one`)
-      console.log("Person not added to the persons array") */
-      //if a person's name is equal to an existing object with that name, change the phone number of that object with the new number
       if(window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)){
         const personDuplicated = persons.find(person => person.name === personObject.name)
-      console.log("Person duplicated:", personDuplicated)
-      const changedPersonNumber = { ...personDuplicated, number: newNumber }
-    
-      personsService
-      .update(personDuplicated.id,changedPersonNumber)
-      .then(returnedPerson => {
-        //setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-        setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
-      })
-      .catch(error => {
-        console.log("An error has ocurred!", error)
-      })
-
+        console.log("Person duplicated:", personDuplicated)
+        const changedPersonNumber = { ...personDuplicated, number: newNumber }
+        
+        personsService.update(personDuplicated.id,changedPersonNumber)
+        .then(returnedPerson =>{setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))})
+        .catch(error => {console.log("An error has ocurred!", error)})
       }
-      
-
-
-      
     }else{
       setNewName("")
-      personsService
-      .create(personObject)
-      .then(createdPerson => {
-      setPersons(persons.concat(createdPerson))
-      
+      personsService.create(personObject)
+      .then(createdPerson => {setPersons(persons.concat(createdPerson))
       console.log(createdPerson)
     })
-      
-    console.log("form submitted")
-    
-
-    }
-    
-
-    //receive new name
-    //check if it is in the persons array
-    //add if there is none
-    //if not, ask to write the name again because it is repeated
-    
+    }  
   }
 
   const handleDeletePerson = (personObject) =>{
-    //check id from persons[] that previously brings the persons from db.json
-    //ask user if he/she wants to delete the person 
-    //delete object from db.json
     if(window.confirm(`Wanna proceed deleting ${personObject.name}?`)){
       personsService
-    .deleteEntry(personObject)
-    .then(deletedEntry => {
-      console.log('Resource deleted successfully:', deletedEntry);
-      setPersons(prevPersons => prevPersons.filter(person => person.id !== personObject.id));
-      /* personsService
-      .getAll()
-      .then(initialPersons => {
-          console.log("this is the response", initialPersons)
-          setPersons(initialPersons)
-        })
-      .catch(error => {
-        console.error('Error updating the phonebook:', error);
-      }); */
-      
-      
-    })
-    .catch(error => {
-      console.error('Error deleting resource:', error);
-    });
-    
-    }
-    
+      .deleteEntry(personObject)
+      .then(deletedEntry => {
+        console.log('Resource deleted successfully:', deletedEntry);
+        setPersons(prevPersons => prevPersons.filter(person => person.id !== personObject.id))})
+      .catch(error => {console.error('Error deleting resource:', error)});
+    } 
   }
-
-  
 
   return (
     <div>

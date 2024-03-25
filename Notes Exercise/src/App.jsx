@@ -11,10 +11,6 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
 
-
-
-
-
 const App = () => {
 
   const [errorMessage, setErrorMessage] = useState('')
@@ -33,7 +29,6 @@ const App = () => {
       })
   }, [])
   
-
   const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
   const addNote = (event) => {
@@ -51,9 +46,6 @@ const App = () => {
       setNewNote('')
       console.log(returnedNote)
     })
-  
-    
-    
   }
 
   const handleNoteChange = (event) => {
@@ -102,13 +94,9 @@ const App = () => {
         Show {showAll ? 'important notes' : 'all notes' }
         </Button>
         </Col>
-        
       </Row>
         
-      
-      
       <Row>
-      
       <ListGroup>
       {notesToShow.map(note =>
           <Note key={note.id} 
@@ -116,13 +104,8 @@ const App = () => {
                 toggleImportance={() => toggleImportanceOf(note.id)}/>
         )}
       </ListGroup>
-      
-      
       </Row>
-      
-      
-      </Container>
-       
+      </Container> 
     </div>
   )
 }
