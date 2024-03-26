@@ -6,6 +6,7 @@ import Header from "./components/Header"
 import PersonsOnThePhoneBook from "./components/PersonsOnThePhoneBook"
 import axios from 'axios'
 import personsService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,6 +14,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('new number')
   const [newSearch, setNewSearch] = useState('search here...')
   const [filteredArray, setFilteredArray] = useState([])
+  const [notification, setNotification] = useState('')
 
   const hook = () => {
     console.log('effect')
@@ -65,11 +67,27 @@ const App = () => {
         personsService.update(personDuplicated.id,changedPersonNumber)
         .then(returnedPerson =>{setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))})
         .catch(error => {console.log("An error has ocurred!", error)})
+        setNotification(
+          `Succesfully changed ${personDuplicated.name} number in the Phonebook`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       }
     }else{
       setNewName("")
       personsService.create(personObject)
-      .then(createdPerson => {setPersons(persons.concat(createdPerson))
+      .then(createdPerson => {
+        setPersons(persons.concat(createdPerson)
+        
+        
+        )
+        setNotification(
+          `${personObject.name} has been added to the Phonebook`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       console.log(createdPerson)
     })
     }  
@@ -96,6 +114,7 @@ const App = () => {
                   handlePersonNumberChange={handlePersonNumberChange}
                   newName={newName}
                   newNumber={newNumber}/>
+      <Notification message={notification}/>
       <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
       <FilteredContacts filteredArray={filteredArray}/>
       <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
