@@ -7,6 +7,12 @@ import PersonsOnThePhoneBook from "./components/PersonsOnThePhoneBook"
 import axios from 'axios'
 import personsService from './services/persons'
 import Notification from './components/Notification'
+import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -106,19 +112,40 @@ const App = () => {
 
   return (
     <div>
-      <Header title={"Phonebook"} headingLevel={"h1"}/>
-      <SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/>
-      <Header title={"Submit your contact:"} headingLevel={"h2"}/>
-      <PersonForm addPersonToThePhoneBook={addPersonToThePhoneBook}
-                  handlePersonNameChange={handlePersonNameChange}
-                  handlePersonNumberChange={handlePersonNumberChange}
-                  newName={newName}
-                  newNumber={newNumber}/>
-      <Notification message={notification}/>
-      <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
-      <FilteredContacts filteredArray={filteredArray}/>
-      <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
-      <PersonsOnThePhoneBook handleDeletePerson={handleDeletePerson} persons={persons}/>
+      <Container>
+      <Row>
+        <Col><Header title={"Phonebook"} headingLevel={"h1"}/></Col>
+        <Col></Col>
+        <Col><SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/></Col>
+      </Row>
+      <Row>
+        <Col>
+          <Notification message={notification}/>
+        </Col>
+        <Col>
+          <Header title={"Submit your contact:"} headingLevel={"h2"}/>
+          <PersonForm addPersonToThePhoneBook={addPersonToThePhoneBook}
+                      handlePersonNameChange={handlePersonNameChange}
+                      handlePersonNumberChange={handlePersonNumberChange}
+                      newName={newName}
+                      newNumber={newNumber}/>
+        </Col>
+        <Col>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={8} md={8} lg={8} className="bg-light">
+          <Header title={"Added to Phonebook:"} headingLevel={"h2"}/>
+          <PersonsOnThePhoneBook handleDeletePerson={handleDeletePerson} persons={persons}/>
+        </Col>
+        <Col xs={4} md={4} lg={4} className="bg-info">
+          <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
+          <FilteredContacts filteredArray={filteredArray}/>
+        </Col>
+      </Row>
+      
+      
+      </Container>
     </div>
   )
 }
