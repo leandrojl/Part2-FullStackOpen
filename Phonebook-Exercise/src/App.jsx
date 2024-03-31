@@ -11,16 +11,18 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Stack from 'react-bootstrap/esm/Stack'
 
 
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-  const [newName, setNewName] = useState('new name')
-  const [newNumber, setNewNumber] = useState('new number')
-  const [newSearch, setNewSearch] = useState('search here...')
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [newSearch, setNewSearch] = useState('')
   const [filteredArray, setFilteredArray] = useState([])
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [colorMessage, setColorMessage] = useState('')
 
   const hook = () => {
     console.log('effect')
@@ -72,16 +74,32 @@ const App = () => {
         
         personsService.update(personDuplicated.id,changedPersonNumber)
         .then(returnedPerson =>{setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))})
-        .catch(error => {console.log("An error has ocurred!", error)})
+        .catch(error => 
+          {if (error.response && error.response.status === 404) {
+            console.error('Error 404: Contact not found');
+            setNotification(
+              `${personObject.name} has already been removed from the Phonebook.`
+            );
+            setColorMessage('danger') 
+            setTimeout(() => {
+              setNotification(null);
+              setColorMessage('')
+            }, 5000);
+          } else {
+            console.error('Error deleting resource:', error);
+      }})
         setNotification(
           `Succesfully changed ${personDuplicated.name} number in the Phonebook`
         )
+        setColorMessage('success')
         setTimeout(() => {
           setNotification(null)
+          setColorMessage('')
         }, 5000)
       }
     }else{
       setNewName("")
+      setNewNumber("")
       personsService.create(personObject)
       .then(createdPerson => {
         setPersons(persons.concat(createdPerson)
@@ -91,8 +109,10 @@ const App = () => {
         setNotification(
           `${personObject.name} has been added to the Phonebook`
         )
+        setColorMessage('success')
         setTimeout(() => {
           setNotification(null)
+          setColorMessage('')
         }, 5000)
       console.log(createdPerson)
     })
@@ -106,23 +126,36 @@ const App = () => {
       .then(deletedEntry => {
         console.log('Resource deleted successfully:', deletedEntry);
         setPersons(prevPersons => prevPersons.filter(person => person.id !== personObject.id))})
-      .catch(error => {console.error('Error deleting resource:', error)});
+      .catch(error => 
+        {if (error.response && error.response.status === 404) {
+          console.error('Error 404: Contact not found');
+          setNotification(
+            `${personObject.name} is no longer on the phonebook.`
+          );
+          setColorMessage('danger') 
+          setTimeout(() => {
+            setNotification(null);
+            setColorMessage('')
+          }, 5000);
+        } else {
+          console.error('Error deleting resource:', error);
+      }});
     } 
   }
 
   return (
     <div>
       <Container>
-      <Row>
+      <Stack gap={2}>
+      <Row className='bg-light rounded'>
         <Col><Header title={"Phonebook"} headingLevel={"h1"}/></Col>
         <Col></Col>
-        <Col><SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/></Col>
+        <Col></Col>
       </Row>
-      <Row>
+      <Row >
         <Col>
-          <Notification message={notification}/>
         </Col>
-        <Col>
+        <Col  className='bg-light rounded-4' >
           <Header title={"Submit your contact:"} headingLevel={"h2"}/>
           <PersonForm addPersonToThePhoneBook={addPersonToThePhoneBook}
                       handlePersonNameChange={handlePersonNameChange}
@@ -130,8 +163,10 @@ const App = () => {
                       newName={newName}
                       newNumber={newNumber}/>
         </Col>
-        <Col>
+        <Col >
+          <Notification message={notification} colorMessage={colorMessage}/>
         </Col>
+        
       </Row>
       <Row>
         <Col xs={8} md={8} lg={8} className="bg-light">
@@ -139,10 +174,13 @@ const App = () => {
           <PersonsOnThePhoneBook handleDeletePerson={handleDeletePerson} persons={persons}/>
         </Col>
         <Col xs={4} md={4} lg={4} className="bg-info">
-          <Header title={"Filtered Contacts:"} headingLevel={"h2"}/>
+          <Header title={"Search your contact:"} headingLevel={"h2"}/>
+          <SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/>
           <FilteredContacts filteredArray={filteredArray}/>
         </Col>
       </Row>
+      </Stack>
+      
       
       
       </Container>
