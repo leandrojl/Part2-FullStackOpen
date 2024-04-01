@@ -12,9 +12,9 @@ function App() {
 
   const [newSearch, setNewSearch] = useState('')
   const [countries, setCountries] = useState(null)
+  const [filteredCountries, setFilteredCountries] = useState(null)
 
   useEffect(()=>{
-    let counter=0
     /*countryService
     .getAll()*/
     /*axios
@@ -22,25 +22,51 @@ function App() {
     countryService
     .getAll()
     .then(initialCountries=>{
-      counter++;
+
       setCountries(initialCountries)
-      console.log(initialCountries)
-      console.log(counter)
+
     })
 
   },[])
 
-  const handleSearchChange = (event) => {
+  
+    /*
+
+    
+    grab first element of newSearch
+    iterate through countries with the first element
+    if result its less than 10 countries ? show : hide (ask for more characters)
+*/
+    const handleSearchChange = (event) => {
     setNewSearch(event.target.value)
-  }
+    if(event.target.value === ""){
+      setFilteredCountries(null)
+        }else{
+          const filteredCountriesBySearch= countries.filter(function(country) {
+            return country.name.common.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase())
+          } )
+          if(filteredCountriesBySearch.length > 10){
+            console.log("MORE CHARACTERS, THERE IS MORE THAN:", filteredCountriesBySearch.length)
+          }else if(filteredCountriesBySearch < 10){
+            setFilteredCountries(filteredCountriesBySearch)
+          }
+          setFilteredCountries(filteredCountriesBySearch)
+        }
+
+      }
+      
+  
+
+  
+  
 
   return (
     <Container>
       <Row>
         <Col lg={4}>
-          <SearchFilter handleSearchChange={handleSearchChange} newSearch={newSearch}/></Col>
+          <SearchFilter  handleSearchChange={handleSearchChange} newSearch={newSearch}/></Col>
         <Col>
-        <DisplayCountries countries={countries}/>
+          <DisplayCountries  filteredCountries={filteredCountries}/>
         </Col>
       </Row> 
     </Container>
