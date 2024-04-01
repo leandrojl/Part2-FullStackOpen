@@ -7,6 +7,7 @@ import { ListGroup } from 'react-bootstrap'
 import axios from 'axios'
 import DisplayCountries from './components/DisplayCountries'
 import countryService from './services/countries'
+import Header from './components/Header'
 
 function App() {
 
@@ -45,28 +46,26 @@ function App() {
           const filteredCountriesBySearch= countries.filter(function(country) {
             return country.name.common.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase())
           } )
-          if(filteredCountriesBySearch.length > 10){
-            console.log("MORE CHARACTERS, THERE IS MORE THAN:", filteredCountriesBySearch.length)
-          }else if(filteredCountriesBySearch < 10){
-            setFilteredCountries(filteredCountriesBySearch)
-          }
           setFilteredCountries(filteredCountriesBySearch)
         }
 
       }
-      
-  
-
-  
-  
 
   return (
     <Container>
       <Row>
-        <Col lg={4}>
-          <SearchFilter  handleSearchChange={handleSearchChange} newSearch={newSearch}/></Col>
+        <Col></Col>
+        <Col><Header title={"Country Searcher:"} headingLevel={"h1"}/></Col>
+        <Col></Col>
+      </Row>
+      <Row>
         <Col>
+        </Col>
+        <Col>
+          <SearchFilter  handleSearchChange={handleSearchChange} newSearch={newSearch}/>
           <DisplayCountries  filteredCountries={filteredCountries}/>
+        </Col>
+        <Col>
         </Col>
       </Row> 
     </Container>
