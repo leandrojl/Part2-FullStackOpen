@@ -10,6 +10,7 @@ import countryService from './services/countries'
 import Header from './components/Header'
 import ShowCountry from './components/ShowCountry'
 
+
 function App() {
 
   const [newSearch, setNewSearch] = useState('')
@@ -24,6 +25,9 @@ function App() {
       setCountries(initialCountries)
     })
   },[])
+
+    const testApiKey = import.meta.env.VITE_WEATHER_API_KEY
+    console.log("testing api key import", testApiKey)
 
     const handleShowCountryButton = (country) =>{
       setCountry(country);
@@ -50,14 +54,12 @@ function App() {
         <Col></Col>
       </Row>
       <Row>
-        
         <Col lg={6}>
           <SearchFilter  handleSearchChange={handleSearchChange} newSearch={newSearch}/>
           <DisplayCountries  filteredCountries={filteredCountries} handleShowCountryButton={handleShowCountryButton}/>
         </Col>
         <Col >
         <ShowCountry country={country} newSearch={newSearch}/>
-        
         </Col>
       </Row> 
     </Container>
