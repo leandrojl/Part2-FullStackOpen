@@ -40,16 +40,15 @@ function App() {
 */
     const handleSearchChange = (event) => {
     setNewSearch(event.target.value)
+    const filteredCountriesBySearch= countries.filter(function(country) {
+      return country.name.common.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase())
+    } )
+    setFilteredCountries(filteredCountriesBySearch)
+    console.log("this are the filtered countries at handleSearchChange function: ", filteredCountriesBySearch)
     if(event.target.value === ""){
       setFilteredCountries(null)
-        }else{
-          const filteredCountriesBySearch= countries.filter(function(country) {
-            return country.name.common.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase())
-          } )
-          setFilteredCountries(filteredCountriesBySearch)
-        }
-
-      }
+    }
+  }
 
   return (
     <Container>
