@@ -5,8 +5,9 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import { ListGroupItem } from 'react-bootstrap'
 import Alert from 'react-bootstrap/Alert'
 import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
 
-const DisplayCountries = ({filteredCountries}) =>{
+const DisplayCountries = ({filteredCountries, handleShowCountryButton}) =>{
 
     console.log("displaycountries component:",filteredCountries)
 
@@ -20,11 +21,24 @@ const DisplayCountries = ({filteredCountries}) =>{
               
               filteredCountries.map(
                   country =>
-                  <ListGroupItem key={country.name.official}>{country.name.common}</ListGroupItem>
+                  <ListGroupItem key={country.name.official}>
+                    <Row>
+                      <Col lg={10}>
+                        {country.name.common}
+                      </Col>
+                      <Col lg={2} className="d-flex justify-content-end">
+                        <Button onClick={()=> handleShowCountryButton(country)}>Show</Button>
+                      </Col>
+                    </Row>
+                  
+                  </ListGroupItem>
+                  
               )
               
               }
             </ListGroup>
+            
+            
           )
 
     } else {
@@ -37,10 +51,14 @@ const DisplayCountries = ({filteredCountries}) =>{
           
                 <Card >
                 <Card.Img variant="top" src={filteredCountries[0].flags.png} />
-                  <Card.Body>
-                    <Card.Title>{filteredCountries[0].name.common}</Card.Title>
+                  <Card.Body >
+
+                  
+
+                  <Card.Title>{filteredCountries[0].name.common}</Card.Title>
                     <Card.Subtitle>Capital: {filteredCountries[0].capital[0]}</Card.Subtitle>
                     <Card.Subtitle>Area: {filteredCountries[0].area}</Card.Subtitle>
+                    <Card.Subtitle>Languages: </Card.Subtitle>
                     <ListGroup>
                       {
                         Object.values(filteredCountries[0].languages).map(languageName =>(
@@ -48,7 +66,10 @@ const DisplayCountries = ({filteredCountries}) =>{
 
                         ))
                       }   
-                    </ListGroup> 
+                    </ListGroup>
+
+                  
+                     
                   </Card.Body>
                   </Card>
           )       

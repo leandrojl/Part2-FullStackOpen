@@ -8,36 +8,27 @@ import axios from 'axios'
 import DisplayCountries from './components/DisplayCountries'
 import countryService from './services/countries'
 import Header from './components/Header'
+import ShowCountry from './components/ShowCountry'
 
 function App() {
 
   const [newSearch, setNewSearch] = useState('')
   const [countries, setCountries] = useState(null)
+  const [country, setCountry] = useState(null)
   const [filteredCountries, setFilteredCountries] = useState(null)
 
   useEffect(()=>{
-    /*countryService
-    .getAll()*/
-    /*axios
-    .get('https://studies.cs.helsinki.fi/restcountries/api/all')*/
     countryService
     .getAll()
     .then(initialCountries=>{
-
       setCountries(initialCountries)
-
     })
-
   },[])
 
-  
-    /*
+    const handleShowCountryButton = (country) =>{
+      setCountry(country);
+    }
 
-    
-    grab first element of newSearch
-    iterate through countries with the first element
-    if result its less than 10 countries ? show : hide (ask for more characters)
-*/
     const handleSearchChange = (event) => {
     setNewSearch(event.target.value)
     const filteredCountriesBySearch= countries.filter(function(country) {
@@ -47,29 +38,29 @@ function App() {
     console.log("this are the filtered countries at handleSearchChange function: ", filteredCountriesBySearch)
     if(event.target.value === ""){
       setFilteredCountries(null)
+      setCountry(null)
     }
   }
 
   return (
     <Container>
       <Row>
+        <Col><Header title={"Country Searcher"} headingLevel={"h1"}/></Col>
         <Col></Col>
-        <Col><Header title={"Country Searcher:"} headingLevel={"h1"}/></Col>
         <Col></Col>
       </Row>
       <Row>
-        <Col>
-        </Col>
-        <Col>
+        
+        <Col lg={6}>
           <SearchFilter  handleSearchChange={handleSearchChange} newSearch={newSearch}/>
-          <DisplayCountries  filteredCountries={filteredCountries}/>
+          <DisplayCountries  filteredCountries={filteredCountries} handleShowCountryButton={handleShowCountryButton}/>
         </Col>
-        <Col>
+        <Col >
+        <ShowCountry country={country} newSearch={newSearch}/>
+        
         </Col>
       </Row> 
     </Container>
-      
-    
   )
 }
 
