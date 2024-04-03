@@ -9,11 +9,8 @@ import Button from 'react-bootstrap/Button'
 
 const DisplayCountries = ({filteredCountries, handleShowCountryButton}) =>{
 
-    console.log("displaycountries component:",filteredCountries)
 
     if(filteredCountries !== null && filteredCountries.length <= 10 && filteredCountries.length > 1){
-
-      console.log('this is filtered countries ', filteredCountries)
         
         return(
             <ListGroup>
@@ -30,31 +27,20 @@ const DisplayCountries = ({filteredCountries, handleShowCountryButton}) =>{
                         <Button onClick={()=> handleShowCountryButton(country)}>Show</Button>
                       </Col>
                     </Row>
-                  
-                  </ListGroupItem>
-                  
+                  </ListGroupItem>   
               )
-              
               }
-            </ListGroup>
-            
-            
+            </ListGroup>  
           )
-
     } else {
       if (filteredCountries === null || filteredCountries.length === 0) {
         return <Alert variant="info">No countries found!</Alert>;
       } else {
         if(filteredCountries.length === 1){
-          console.log("languages values:", Object.values(filteredCountries[0].languages))
-          return(
-          
+          return( 
                 <Card >
                 <Card.Img variant="top" src={filteredCountries[0].flags.png} />
-                  <Card.Body >
-
-                  
-
+                  <Card.Body>
                   <Card.Title>{filteredCountries[0].name.common}</Card.Title>
                     <Card.Subtitle>Capital: {filteredCountries[0].capital[0]}</Card.Subtitle>
                     <Card.Subtitle>Area: {filteredCountries[0].area}</Card.Subtitle>
@@ -66,36 +52,22 @@ const DisplayCountries = ({filteredCountries, handleShowCountryButton}) =>{
 
                         ))
                       }   
-                    </ListGroup>
-
-                  
-                     
+                    </ListGroup>  
                   </Card.Body>
                   </Card>
           )       
-
         }else{
-
           return(
             <Row>
-              
               <Col>
               <Alert variant="danger">
               There are {filteredCountries.length} countries, specify more characters!
               </Alert>
               </Col>
-              
             </Row>
           )
-
-        }
-        
+        }  
       }}
-   
-    
-
-    
-  
   }
 
   export default DisplayCountries

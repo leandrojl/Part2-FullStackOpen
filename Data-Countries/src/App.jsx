@@ -16,6 +16,7 @@ function App() {
   const [newSearch, setNewSearch] = useState('')
   const [countries, setCountries] = useState(null)
   const [country, setCountry] = useState(null)
+  const [countryApi, setCountryApi] = useState(null)
   const [filteredCountries, setFilteredCountries] = useState(null)
 
   useEffect(()=>{
@@ -24,10 +25,26 @@ function App() {
     .then(initialCountries=>{
       setCountries(initialCountries)
     })
+    
   },[])
 
-    const testApiKey = import.meta.env.VITE_WEATHER_API_KEY
-    console.log("testing api key import", testApiKey)
+  useEffect(() => {
+    const fetchWeather = async () => {
+      if (country !== null) { 
+        try {
+          const response = await axios.get(
+            `http://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_WEATHER_API_KEY}&q=${country.capital[0]}&aqi=no`
+          );
+          setCountryApi(response.data);
+          console.log("this is the response from weather api inside fetchWeather in useEffect",response.data)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    };
+
+    fetchWeather();
+  }, [country]);   
 
     const handleShowCountryButton = (country) =>{
       setCountry(country);
@@ -39,7 +56,6 @@ function App() {
       return country.name.common.toLocaleLowerCase().includes(newSearch.toLocaleLowerCase())
     } )
     setFilteredCountries(filteredCountriesBySearch)
-    console.log("this are the filtered countries at handleSearchChange function: ", filteredCountriesBySearch)
     if(event.target.value === ""){
       setFilteredCountries(null)
       setCountry(null)
@@ -59,7 +75,7 @@ function App() {
           <DisplayCountries  filteredCountries={filteredCountries} handleShowCountryButton={handleShowCountryButton}/>
         </Col>
         <Col >
-        <ShowCountry country={country} newSearch={newSearch}/>
+        <ShowCountry country={country} newSearch={newSearch} countryApi={countryApi}/>
         </Col>
       </Row> 
     </Container>
