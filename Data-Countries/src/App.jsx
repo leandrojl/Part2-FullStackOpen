@@ -21,30 +21,21 @@ function App() {
 
   useEffect(()=>{
     countryService
-    .getAll()
+    .getAllCountries()
     .then(initialCountries=>{
       setCountries(initialCountries)
     })
+
+    countryService
+    .fetchWeather(country)
+    .then(countryWeather => {
+      setCountryApi(countryWeather)
+    })
+    .catch(error => {
+      console.log("Error while fetching data: ",error)
+    })
     
-  },[])
-
-  useEffect(() => {
-    const fetchWeather = async () => {
-      if (country !== null) { 
-        try {
-          const response = await axios.get(
-            `http://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_WEATHER_API_KEY}&q=${country.capital[0]}&aqi=no`
-          );
-          setCountryApi(response.data);
-          console.log("this is the response from weather api inside fetchWeather in useEffect",response.data)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-    };
-
-    fetchWeather();
-  }, [country]);   
+  },[country])
 
     const handleShowCountryButton = (country) =>{
       setCountry(country);
